@@ -146,6 +146,22 @@ class Provider extends AbstractProvider
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function refreshToken($refreshToken)
+    {
+        $response = $this->getRefreshTokenResponse($refreshToken);
+
+        return new Token(
+            Arr::get($response, 'id_token'),
+            Arr::get($response, 'refresh_token'),
+            Arr::get($response, 'id_token_expires_in'),
+            explode($this->scopeSeparator, Arr::get($response, 'scope', ''))
+        );
+    }
+
+
+    /**
      * validate id_token
      * - signature validation using firebase/jwt library.
      * - claims validation
