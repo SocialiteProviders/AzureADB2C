@@ -117,6 +117,18 @@ class Provider extends AbstractProvider
     {
         return $this->getOpenIdConfiguration()->token_endpoint;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserByToken($token)
+    {
+        $this->setRedirectUrl();
+
+        $claims = $this->validateIdToken($token);
+
+        return $this->mapUserToObject($claims);
+    }
     
     /**
      * Additional implementation to get user claims from id_token.
