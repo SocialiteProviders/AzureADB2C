@@ -121,9 +121,13 @@ class Provider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
-    protected function getUserByToken($token)
+    public function getUserByToken($token)
     {
-        // no implementation required because Azure AD B2C doesn't return access_token
+        $this->setRedirectUrl();
+
+        $claims = $this->validateIdToken($token);
+
+        return $this->mapUserToObject($claims);
     }
 
     /**
